@@ -1,8 +1,15 @@
 import { Button, Card, CardActions, CardContent } from "@mui/material";
 import type { UserResponse } from "../../api/types";
 import { TitleValue } from "../common/TitleValue";
+import { useNavigate } from "react-router-dom";
 
 export const UserCard = ({ user }: { user: UserResponse }) => {
+  const navigate = useNavigate();
+
+  function handleClick(userId: number) {
+    navigate(`${userId}/albums`);
+  }
+
   return (
     <Card key={user.id} sx={{ padding: 0, margin: 0, border: 2 }}>
       <CardContent sx={{ padding: 0.5, margin: 0, pb: 0 }}>
@@ -19,9 +26,7 @@ export const UserCard = ({ user }: { user: UserResponse }) => {
             sx={{ display: "flex", marginLeft: "auto" }}
             variant="contained"
             size="small"
-            onClick={() => {
-              console.log("clicked");
-            }}
+            onClick={() => handleClick(user.id)}
           >
             Albums
           </Button>

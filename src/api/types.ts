@@ -17,3 +17,9 @@ export interface UserResponse {
     name: string;
   };
 }
+
+export interface UserAlbums {
+  userId: number;
+  id: number;
+  title: string;
+}
