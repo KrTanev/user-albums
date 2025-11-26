@@ -1,8 +1,20 @@
+import Box from "@mui/material/Box";
 import { useGetUsers } from "../api/userController";
+import { UserCard } from "../components/Users/UserCard";
+import { Grid } from "@mui/material";
 
 export const UsersPage = () => {
-  const { data } = useGetUsers();
-  console.log(data);
+  const { data = [] } = useGetUsers();
 
-  return <div>Users</div>;
+  return (
+    <Box>
+      <Grid container rowSpacing={2} columnSpacing={{ xs: 1, sm: 1, md: 2 }}>
+        {data.map((currentUser) => (
+          <Grid key={currentUser.id} size={3}>
+            <UserCard user={currentUser} />
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
+  );
 };
