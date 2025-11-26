@@ -5,7 +5,6 @@ import { Albums } from "../components/albums/Albums";
 
 export const AlbumsPage = () => {
   const params = useParams();
-  console.log(params);
 
   const { data = [] } = useGetUserAlbum(Number(params.id));
 
@@ -13,8 +12,8 @@ export const AlbumsPage = () => {
     <Box>
       <Grid container rowSpacing={2} columnSpacing={{ xs: 1, sm: 1, md: 2 }}>
         {data.map((albums) => (
-          <Grid size={3}>
-            <Albums key={albums.id} album={albums} />
+          <Grid key={albums.id} size={3}>
+            <Albums album={albums} />
           </Grid>
         ))}
       </Grid>

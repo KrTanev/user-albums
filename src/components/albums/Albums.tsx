@@ -4,7 +4,7 @@ import type { UserAlbums } from "../../api/types";
 
 export const Albums = ({ album }: { album: UserAlbums }) => {
   return (
-    <Card key={album.id}>
+    <Card>
       <CardContent>
         <TitleValue title="User ID" value={album.userId.toString()} />
         <TitleValue title="Album ID" value={album.id.toString()} />

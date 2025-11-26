@@ -10,8 +10,8 @@ export const UsersPage = () => {
     <Box>
       <Grid container rowSpacing={2} columnSpacing={{ xs: 1, sm: 1, md: 2 }}>
         {data.map((currentUser) => (
-          <Grid size={3}>
-            <UserCard key={currentUser.id} user={currentUser} />
+          <Grid key={currentUser.id} size={3}>
+            <UserCard user={currentUser} />
           </Grid>
         ))}
       </Grid>
