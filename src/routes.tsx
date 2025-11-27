@@ -3,6 +3,7 @@ import { LandingPage } from "./pages/LandingPage";
 import { UsersPage } from "./pages/UsersPage";
 import { AlbumsPage } from "./pages/AlbumsPage";
 import { PhotosPage } from "./pages/PhotosPage";
+import { FavouritesPage } from "./pages/FavouritesPage";
 
 export const routes: RouteObject[] = [
   {
@@ -24,5 +25,9 @@ export const routes: RouteObject[] = [
   {
     path: "/albums/:id/photos",
     element: <PhotosPage />,
+  },
+  {
+      path: "/favourites",
+    element: <FavouritesPage />,
   },
 ];

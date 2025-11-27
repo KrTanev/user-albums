@@ -2,11 +2,13 @@
 import {
   Box,
   Button,
+  Checkbox,
   Dialog,
   DialogTitle,
   Grid,
   TextField,
   ToggleButton,
+  Typography,
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useGetAlbumPhotos } from "../api/photoController";
@@ -77,6 +79,33 @@ export const PhotosPage = () => {
     ? data.map((photo) => photo.id).indexOf(currentImageToPreview?.id)
     : undefined;
 
+  const favPhotos = localStorage.getItem("favourites")
+    ? (JSON.parse(localStorage.getItem("favourites") || "") as AlbumPhotos[])
+    : [];
+
+  console.log("favPhotos", favPhotos);
+  if (localStorage.getItem("favourites")) {
+    console.log(
+      "storage",
+      JSON.parse(localStorage.getItem("favourites") || "")
+    );
+  }
+  const handleFavPhoto = (toAdd: boolean) => {
+    const currentItems = localStorage.getItem("favourites")
+      ? (JSON.parse(localStorage.getItem("favourites") || "") as AlbumPhotos[])
+      : [];
+
+    let updatedItems = [];
+    if (toAdd) {
+      updatedItems = [...(currentItems || []), currentImageToPreview];
+    } else {
+      updatedItems =
+        currentItems?.filter((x) => x.id !== currentImageToPreview?.id) || [];
+    }
+
+    localStorage.setItem("favourites", JSON.stringify(updatedItems));
+  };
+
   const handleNextButton = () => {
     if (currentImageToPreview && selectedImageIndex) {
       setCurrentImageToPreview(data[selectedImageIndex + 1]);
@@ -108,7 +137,11 @@ export const PhotosPage = () => {
             }}
           />
           <Box display={"flex"} alignItems={"center"} sx={{ gap: 2 }}>
-            <ToggleButton onClick={handleGridView} value="list" aria-label="list">
+            <ToggleButton
+              onClick={handleGridView}
+              value="list"
+              aria-label="list"
+            >
               Grid view
             </ToggleButton>
             <ToggleButton
@@ -131,34 +164,47 @@ export const PhotosPage = () => {
 
       <Dialog open={Boolean(currentImageToPreview)} onClose={handleClose}>
         <DialogTitle>{currentImageToPreview?.title}</DialogTitle>
-        <Box sx={{ display: "flex" }}>
-          <Button
-            onClick={handlePrevButton}
-            disabled={selectedImageIndex == 0 ? true : false}
-            // disabled={
-            //   prevOrLastButtonStatusDisabled(selectedImageIndex!, data)
-            //     .isPrevEnabled
-            // }
-          >
-            Prev
-          </Button>
-          <Box sx={{ height: "500", width: "500" }}>
-            <img
-              src="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e"
-              width={"400"}
-              height={"400"}
+        <Box>
+          <Box sx={{ display: "flex" }}>
+            <Button
+              onClick={handlePrevButton}
+              disabled={selectedImageIndex == 0 ? true : false}
+              // disabled={
+              //   prevOrLastButtonStatusDisabled(selectedImageIndex!, data)
+              //     .isPrevEnabled
+              // }
+            >
+              Prev
+            </Button>
+            <Box sx={{ height: "500", width: "500" }}>
+              <img
+                src="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e"
+                width={"400"}
+                height={"400"}
+              />
+            </Box>
+            <Button
+              onClick={handleNextButton}
+              disabled={selectedImageIndex == data.length - 1 ? true : false}
+              // disabled={
+              //   prevOrLastButtonStatusDisabled(selectedImageIndex!, data)
+              //     .isNextEnabled
+              // }
+            >
+              Next
+            </Button>
+          </Box>
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Typography>Add to favourites</Typography>
+            <Checkbox
+              defaultChecked={!!favPhotos?.find(
+                (x) => x.id === currentImageToPreview?.id
+              )}
+              onChange={(e) => {
+                handleFavPhoto(e.target.checked);
+              }}
             />
           </Box>
-          <Button
-            onClick={handleNextButton}
-            disabled={selectedImageIndex == data.length - 1 ? true : false}
-            // disabled={
-            //   prevOrLastButtonStatusDisabled(selectedImageIndex!, data)
-            //     .isNextEnabled
-            // }
-          >
-            Next
-          </Button>
         </Box>
       </Dialog>
     </ImageContext>

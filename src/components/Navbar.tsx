@@ -26,6 +26,15 @@ export const Navbar = () => {
           >
             Users
           </Button>
+          <Button
+            color="inherit"
+            startIcon={<PeopleIcon />}
+            component={RouterLink}
+            to="/favourites"
+            sx={{ textTransform: "none", fontSize: "1rem" }}
+          >
+            Favourites
+          </Button>
         </Box>
       </Toolbar>
     </AppBar>
