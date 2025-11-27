@@ -9,7 +9,7 @@ export const Photos = ({ photo }: { photo: AlbumPhotos }) => {
       <CardContent>
         <TitleValue title="Album ID" value={photo.albumId.toString()} />
         <TitleValue title="Photo ID" value={photo.id.toString()} />
-        <ImageTitleAndThumbnail photo={photo}></ImageTitleAndThumbnail>
+        <ImageTitleAndThumbnail photo={photo} />
       </CardContent>
     </Card>
   );
