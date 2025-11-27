@@ -1,5 +1,13 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-import { Box, Button, Dialog, DialogTitle, Grid } from "@mui/material";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogTitle,
+  Grid,
+  TextField,
+  ToggleButton,
+} from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useGetAlbumPhotos } from "../api/photoController";
 import { Photos } from "../components/photos/Photos";
@@ -48,6 +56,23 @@ export const PhotosPage = () => {
   const [currentImageToPreview, setCurrentImageToPreview] =
     useState<AlbumPhotos>();
 
+  const [inputValue, setInputValue] = useState("");
+
+  const [size, setSize] = useState(3);
+
+  const handleGridView = () => {
+    if (size === 12) {
+      setSize(3);
+    }
+  };
+  const handleListView = () => {
+    if (size === 3) {
+      setSize(12);
+    }
+  };
+
+  const filtered = data.filter((image) => image.title.includes(inputValue));
+
   const selectedImageIndex = currentImageToPreview
     ? data.map((photo) => photo.id).indexOf(currentImageToPreview?.id)
     : undefined;
@@ -70,10 +95,34 @@ export const PhotosPage = () => {
 
   return (
     <ImageContext value={{ currentImageToPreview, setCurrentImageToPreview }}>
-      <Box>
+      <Box height={"100%"}>
+        <Box display={"flex"} alignItems={"center"}>
+          <TextField
+            sx={{ width: "90%", marginRight: 2 }}
+            margin={"normal"}
+            label="Search image by name"
+            value={inputValue}
+            variant="outlined"
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              setInputValue(event.target.value);
+            }}
+          />
+          <Box display={"flex"} alignItems={"center"} sx={{ gap: 2 }}>
+            <ToggleButton onClick={handleGridView} value="list" aria-label="list">
+              Grid view
+            </ToggleButton>
+            <ToggleButton
+              onClick={handleListView}
+              value="module"
+              aria-label="module"
+            >
+              List view
+            </ToggleButton>
+          </Box>
+        </Box>
         <Grid container rowSpacing={2} columnSpacing={{ xs: 1, sm: 1, md: 2 }}>
-          {data.map((photo) => (
-            <Grid key={photo.id} size={3}>
+          {filtered.map((photo) => (
+            <Grid key={photo.title} size={size}>
               <Photos photo={photo} />
             </Grid>
           ))}
